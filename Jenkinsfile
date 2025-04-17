@@ -84,7 +84,7 @@ pipeline {
 
                     // Fetch Node App IP from Terraform output
                     NODE_APP_IP = sh(
-                        script: 'terraform output -raw node_app_ip',
+                        script: 'terraform output -raw nodeapp',
                         returnStdout: true
                     ).trim()
 
