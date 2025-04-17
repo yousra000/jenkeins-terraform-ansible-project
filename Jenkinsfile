@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        label 'private-slave'  // Change to your Jenkins agent label
+        label 'jenkins-slave'  // Change to your Jenkins agent label
     }
     
 
