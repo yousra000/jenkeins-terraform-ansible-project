@@ -118,7 +118,7 @@ pipeline {
         }
         }
 
-/ STAGE 5: Prepare Ansible Inventory
+// STAGE 5: Prepare Ansible Inventory
 stage('Prepare Inventory') {
     steps {
         dir('ansible/node_app') {
