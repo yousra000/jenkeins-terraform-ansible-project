@@ -123,33 +123,17 @@ stage('Prepare Inventory') {
     steps {
         dir('ansible/node_app') {
             script {
-                // First print the NODE_APP_IP for debugging
-                echo "DEBUG - NODE_APP_IP value: ${env.NODE_APP_IP}"
-                
-                // Verify the IP is not empty
-                if (!env.NODE_APP_IP?.trim()) {
-                    error("NODE_APP_IP is empty or not set!")
-                }
-                
-                // Print the entire inventory content before writing
                 def inventoryContent = """[ubuntu_servers]
 server1 ansible_host=${env.NODE_APP_IP} ansible_user=ubuntu"""
-                
-                echo "DEBUG - Inventory content:\n${inventoryContent}"
-                
-                // Write the inventory file
+
                 writeFile(
                     file: 'hosts.ini',
                     text: inventoryContent.trim()
                 )
-                
-                // Verify the file was created
-                sh 'cat hosts.ini'
             }
         }
     }
 }
-
     // STAGE 6: Run Ansible Playbook on Application Node
     stage('Deploy with Ansible') {
         steps {
@@ -160,6 +144,7 @@ server1 ansible_host=${env.NODE_APP_IP} ansible_user=ubuntu"""
                     chmod 600 /home/ubuntu/.ssh/key1.pem
                     ansible-playbook -i hosts.ini ansible.yml \
                     --private-key /home/ubuntu/.ssh/key1.pem \
+                    --ssh-extra-args="-o StrictHostKeyChecking=no -o ServerAliveInterval=30" 
                     --extra-vars 'REGISTRY=${env.REGISTRY} REPOSITORY=${env.REPOSITORY} RDS_USERNAME=${DB_USERNAME} RDS_PASSWORD=${DB_PASSWORD} REDIS_HOSTNAME=${env.REDIS_HOSTNAME} RDS_HOSTNAME=${env.RDS_HOSTNAME}'
                     """
                 }
