@@ -157,7 +157,7 @@ server1 ansible_host=${env.NODE_APP_IP} ansible_user=ubuntu"""
                 script {
                     // Run Ansible playbook with SSH key
                     sh """
-                    chmod 600 /home/ubuntu/.ssh/mykey.pem
+                    chmod 600 /home/ubuntu/.ssh/key1.pem
                     ansible-playbook -i hosts.ini ansible.yml \
                     --private-key /home/ubuntu/.ssh/key1.pem \
                     --extra-vars 'REGISTRY=${env.REGISTRY} REPOSITORY=${env.REPOSITORY} RDS_USERNAME=${DB_USERNAME} RDS_PASSWORD=${DB_PASSWORD} REDIS_HOSTNAME=${env.REDIS_HOSTNAME} RDS_HOSTNAME=${env.RDS_HOSTNAME}'
